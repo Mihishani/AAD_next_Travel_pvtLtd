@@ -7,7 +7,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class ServiceRegisterApplication {
 
     public static void main(String[] args) {
+
         SpringApplication.run(ServiceRegisterApplication.class, args);
+        System.out.println("SERVER_REGISTRY");
     }
 
 }
