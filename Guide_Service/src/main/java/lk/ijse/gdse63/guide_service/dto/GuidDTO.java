@@ -5,10 +5,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class GuidDTO {
+public class GuidDTO implements Serializable,SuperDTO {
     private String guideId;
     private String guideName;
     private String guideAddress;
