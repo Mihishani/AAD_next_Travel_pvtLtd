@@ -8,8 +8,10 @@ import lk.ijse.gdse63.aad.hotel_service.service.custom.HotelService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +30,7 @@ public class HotelServiceImpl implements HotelService {
    private HotelRepo hotelRepo;
 
     @Override
+    @PostMapping(path = "save",consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
     public Response save(HotelDTO hotelDTO) {
         if (search(hotelDTO.getHotelID()).getData() == null) {
             hotelRepo.save(modelMapper.map(hotelDTO, Hotel.class));
