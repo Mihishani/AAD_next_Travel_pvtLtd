@@ -8,13 +8,13 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("")
+@RequestMapping("http://localhost:8081")
 @CrossOrigin
 public class PackageDetailController {
-    @GetMapping(path = "/demo")
+ /*   @GetMapping(path = "/demo")
     public String getHello(){
         return "Helloooooo";
-    }
+    }*/
 
     @Autowired
     private PackageDetailService packageDetailService;
@@ -38,6 +38,12 @@ public class PackageDetailController {
     public Response delete(@RequestParam("packageDetailId") String packageDetailId) {
         return packageDetailService.delete(packageDetailId);
     }
+
+    @GetMapping(path = "/getPackageDetail")
+    public PackageDetailDTO getPackageDetail(@RequestParam("packageDetailId") String packageDetailId) {
+        return packageDetailService.getPackageDetail(packageDetailId);
+    }
+
 
     @GetMapping(path = "/fetchAll", produces = MediaType.APPLICATION_JSON_VALUE)
     public Response getAll() {
