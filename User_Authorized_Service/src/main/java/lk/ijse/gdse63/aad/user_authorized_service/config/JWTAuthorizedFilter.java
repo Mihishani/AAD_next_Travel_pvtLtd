@@ -52,7 +52,7 @@ public class JWTAuthorizedFilter  extends OncePerRequestFilter {
         //Checking of the username's not nullability  and the authentication status of the current user.
         if (userName != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails user = userServiceIMPL.loadUserByUsername(userName);
-            System.out.println("User : "+user.toString());
+         /*   System.out.println("User : "+user.toString());*/
 
             if (JWTService.validateToken(jwtToken, user)) {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());

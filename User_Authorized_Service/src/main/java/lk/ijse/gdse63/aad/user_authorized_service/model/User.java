@@ -1,8 +1,7 @@
-package lk.ijse.gdse63.aad.user_authorized_service.entity;
+package lk.ijse.gdse63.aad.user_authorized_service.model;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,7 +11,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.Date;
+
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,19 +20,19 @@ import java.util.Date;
 @Builder
 public class User implements UserDetails {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-
     private String userId;
-    private String name;
     private String userName;
-    private String userPassword;
+    private String pw;
+    @Enumerated
+    private Roles role;
     private String userNIC;
-    private String userNICImageLocation;
-    private Date userDOB;
-    private String userEmail;
     private String userAddress;
+    private String userDOB;
+    private String userPhone;
+    private String userEmail;
+    private String gender;
+    private String userNICimageLocation;
     private String userImageLocation;
-    private String remake;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
