@@ -4,8 +4,10 @@ import lk.ijse.gdse63.vehicle_service.dto.VehicleDTO;
 import lk.ijse.gdse63.vehicle_service.response.Response;
 import lk.ijse.gdse63.vehicle_service.service.SuperService;
 
-public interface VehicleService <T extends VehicleDTO,ID > {
-    Response save(T t);
+import java.util.List;
+
+public interface VehicleService extends SuperService<VehicleDTO,String> {
+/*    Response save(T t);
 
     Response update(T t);
 
@@ -15,5 +17,9 @@ public interface VehicleService <T extends VehicleDTO,ID > {
 
     Response getAll();
 
-    Response createAndSendResponse(int statusCode, String message, Object data);
+    VehicleDTO getVehicle(String id);
+
+    Response deleteVehicles(List<String> vehicleIds);
+
+    Response createAndSendResponse(int statusCode, String message, Object data);*/
 }

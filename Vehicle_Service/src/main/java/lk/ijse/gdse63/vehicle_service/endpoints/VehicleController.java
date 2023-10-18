@@ -8,14 +8,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("")
+@RequestMapping("http://localhost:8081")
 @CrossOrigin
 public class VehicleController {
-    @GetMapping(path = "/demo")
+/*    @GetMapping(path = "/demo")
     public String getHello(){
         return "Helloooooo";
-    }
+    }*/
 
     @Autowired
     private VehicleService vehicleService;
@@ -43,6 +45,16 @@ public class VehicleController {
     @GetMapping(path = "/fetchAll", produces = MediaType.APPLICATION_JSON_VALUE)
     public Response getAll() {
         return vehicleService.getAll();
+    }
+
+    @GetMapping(path = "/getVehicle")
+    public VehicleDTO getVehicle(@RequestParam("vehicleId") String vehicleId) {
+        return vehicleService.getVehicle(vehicleId);
+    }
+
+    @PutMapping( value = "/getVehicleIds")
+    public Response getVehicleIds(@RequestBody List<String> VehicleIds){
+        return vehicleService.deleteVehicles(VehicleIds);
     }
 
 }

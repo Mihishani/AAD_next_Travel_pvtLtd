@@ -26,5 +26,7 @@ public class Vehicles {
     private String transmission;
     private String driversName;
     private String driversPhoneNumber;
-    private String remark;
+    private String driverLicenseImageLocation;
+
+    private String packageId;
 }
