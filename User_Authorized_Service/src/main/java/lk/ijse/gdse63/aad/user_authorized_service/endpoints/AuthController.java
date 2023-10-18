@@ -1,7 +1,8 @@
 package lk.ijse.gdse63.aad.user_authorized_service.endpoints;
 
 
-import lk.ijse.gdse63.aad.user_authorized_service.entity.User;
+
+import lk.ijse.gdse63.aad.user_authorized_service.model.User;
 import lk.ijse.gdse63.aad.user_authorized_service.response.Response;
 import lk.ijse.gdse63.aad.user_authorized_service.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;

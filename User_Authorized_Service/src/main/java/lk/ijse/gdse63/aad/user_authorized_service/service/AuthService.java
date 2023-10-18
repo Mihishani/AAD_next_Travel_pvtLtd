@@ -1,7 +1,7 @@
 package lk.ijse.gdse63.aad.user_authorized_service.service;
 
 import lk.ijse.gdse63.aad.user_authorized_service.config.JWTService;
-import lk.ijse.gdse63.aad.user_authorized_service.entity.User;
+import lk.ijse.gdse63.aad.user_authorized_service.model.User;
 import lk.ijse.gdse63.aad.user_authorized_service.repo.UserRepo;
 import lk.ijse.gdse63.aad.user_authorized_service.response.Response;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +29,7 @@ public class AuthService {
 
     public Response register(User user) {
         String password = passwordEncoder.encode(user.getPassword());
-        user.setUserPassword(password);
+        user.setPw(password);
         userRepo.save(user);
         response.setStatusCode(HttpStatus.OK.value());
         response.setMessage("User successfully registered and JWT Successfully generated!");
