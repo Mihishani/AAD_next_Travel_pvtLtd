@@ -1,17 +1,16 @@
 package lk.ijse.gdse63.aad.hotel_service.service.custom.impl;
 
+import jakarta.transaction.Transactional;
 import lk.ijse.gdse63.aad.hotel_service.dto.HotelDTO;
 import lk.ijse.gdse63.aad.hotel_service.entity.Hotel;
+import lk.ijse.gdse63.aad.hotel_service.interfaces.PackageControllerInterface;
 import lk.ijse.gdse63.aad.hotel_service.repo.HotelRepo;
 import lk.ijse.gdse63.aad.hotel_service.response.Response;
 import lk.ijse.gdse63.aad.hotel_service.service.custom.HotelService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +18,7 @@ import java.util.Optional;
 
 @Service
 @Transactional
-public class HotelServiceImpl implements HotelService {
+public  class HotelServiceImpl implements HotelService {
    @Autowired
    private Response response;
 
@@ -29,16 +28,22 @@ public class HotelServiceImpl implements HotelService {
    @Autowired
    private HotelRepo hotelRepo;
 
+   @Autowired
+   private PackageControllerInterface packageControllerInterface;
+
     @Override
-    @PostMapping(path = "save",consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response save(HotelDTO hotelDTO) {
+ /*   @PostMapping(path = "save",consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)*/
+    public Response saveHotel(HotelDTO hotelDTO) {
         if (search(hotelDTO.getHotelID()).getData() == null) {
+            packageControllerInterface.getHotelIds(hotelDTO.getHotelID(),hotelDTO.getPackageId());
+
             hotelRepo.save(modelMapper.map(hotelDTO, Hotel.class));
             return createAndSendResponse(HttpStatus.OK.value(), "Hotel Successfully saved!", null);
         }
         throw new RuntimeException("Hotel already exists!");
 
     }
+
 
     @Override
     public Response update(HotelDTO hotelDTO) {
@@ -81,6 +86,29 @@ public class HotelServiceImpl implements HotelService {
             return createAndSendResponse(HttpStatus.FOUND.value(), "Hotels Successfully retrieved!", hotelDTOS);
         }
         throw new RuntimeException("No Hotels found in the database!");
+
+    }
+
+    @Override
+    public HotelDTO getHotel(String id) {
+        Optional<Hotel> hotel = hotelRepo.findById(id);
+
+        if (hotel.isPresent()) {
+            System.out.println(hotel.get());
+            return modelMapper.map(hotel.get(), HotelDTO.class);
+        }
+        throw new RuntimeException("hotel cannot found!!!");
+
+    }
+
+    @Override
+    public Response deleteHotels(List<String> hotelIds) {
+        System.out.println(hotelIds);
+        for (String hotelId : hotelIds) {
+            hotelRepo.deleteById(hotelId);
+            return createAndSendResponse(HttpStatus.OK.value(), "Hotel "+hotelIds+" deleted!", null);
+        }
+        return createAndSendResponse(HttpStatus.OK.value(), "ooppsss!", null);
 
     }
 

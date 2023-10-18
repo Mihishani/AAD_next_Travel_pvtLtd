@@ -2,9 +2,12 @@ package lk.ijse.gdse63.aad.hotel_service.service.custom;
 
 import lk.ijse.gdse63.aad.hotel_service.dto.HotelDTO;
 import lk.ijse.gdse63.aad.hotel_service.response.Response;
+import lk.ijse.gdse63.aad.hotel_service.service.SuperService;
 
-public interface HotelService<T extends HotelDTO,ID> {
-    Response save(T t);
+import java.util.List;
+
+public interface HotelService extends SuperService<HotelDTO,String> {
+/*    Response save(T t);
 
     Response update(T t);
 
@@ -14,6 +17,10 @@ public interface HotelService<T extends HotelDTO,ID> {
 
     Response getAll();
 
-    Response createAndSendResponse(int statusCode, String message, Object data);
+    HotelDTO getHotel(String id);
+
+    Response deleteHotels(List<String> hotelIds);
+
+    Response createAndSendResponse(int statusCode, String message, Object data);*/
 
 }

@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("")
 @CrossOrigin
@@ -21,7 +23,7 @@ public class HotelController {
 
     @PostMapping(path = "/save",consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
     public Response saveHotel(@RequestBody HotelDTO hotelDTO){
-        return hotelService.save(hotelDTO);
+        return hotelService.saveHotel(hotelDTO);
     }
 
     @PutMapping(path = "/update", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -42,5 +44,15 @@ public class HotelController {
     @GetMapping(path = "/fetchAll", produces = MediaType.APPLICATION_JSON_VALUE)
     public Response getAll() {
         return hotelService.getAll();
+    }
+
+    @GetMapping(path = "/getHotel")
+    public HotelDTO getHotel(@RequestParam("hotelId") String hotelId) {
+        return hotelService.getHotel(hotelId);
+    }
+
+    @PutMapping( value = "/getHotelIds")
+    public Response getHotelIds(@RequestBody List<String> HotelIds){
+        return hotelService.deleteHotels(HotelIds);
     }
 }
