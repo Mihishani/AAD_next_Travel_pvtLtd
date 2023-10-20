@@ -24,4 +24,5 @@ public class Guide {
     private String guideIDImageLocation;
     private String guideExperience;
     private String manDayValue;
+    private String remarks;
 }

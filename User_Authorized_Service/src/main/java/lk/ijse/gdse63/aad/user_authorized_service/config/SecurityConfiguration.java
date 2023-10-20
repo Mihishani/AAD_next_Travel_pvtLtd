@@ -11,8 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.security.web.util.matcher.RequestMatcher;
+
 
 @Configuration
 @EnableWebSecurity
@@ -27,12 +26,12 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        RequestMatcher matcher= new AntPathRequestMatcher("/api/v1/auth/register");
+     /*   RequestMatcher matcher= new AntPathRequestMatcher("/api/v1/auth/register");*/
 
         http
                 .csrf()
                 .disable().authorizeRequests()
-                .requestMatchers(matcher)
+                .requestMatchers("/api/v1/auth/register")
                 .permitAll()
                 .anyRequest()
                 .authenticated()

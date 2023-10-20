@@ -5,6 +5,7 @@ import lk.ijse.gdse63.aad.user_authorized_service.interfaces.GuideControllerInte
 import lk.ijse.gdse63.aad.user_authorized_service.response.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,33 +16,34 @@ public class GuideController {
    @Autowired
    private GuideControllerInterface guideControllerInterface;
 
-    @GetMapping(path = "/demo")
+/*    @GetMapping(path = "/demo")
     String getHello(){
         return "hellooooo";
-    }
+    }*/
 
-    @PostMapping(path = "/sg",consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response saveGuide(@RequestBody GuidDTO guideDTO){
-        return  guideControllerInterface.saveGuide(guideDTO);
+    @PostMapping(path = "/saveGuide",consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Response> saveGuide(@RequestBody GuidDTO guideDTO){
+        return guideControllerInterface.saveGuide(guideDTO);
     }
-
-    @PutMapping(path = "/updateGuide", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response update(@RequestBody GuidDTO guideDTO) {
-        return guideControllerInterface.update(guideDTO);
+    @PutMapping(path = "/updateGuide",consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Response> updateGuide(@RequestBody   GuidDTO guideDTO){
+        return  guideControllerInterface.updateGuide(guideDTO);
     }
-
-    @GetMapping(path = "/searchGuide", params = "guideId", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response search(@RequestParam("guideId") String guideId) {
-        return guideControllerInterface.search(guideId);
+    @GetMapping(path = "/getGuide",params = "guideID",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Response> getGuide(@RequestParam("guideID")String guideID){
+        return guideControllerInterface.getGuide(guideID);
     }
-
-    @DeleteMapping(path = "/deleteGuide", params = "guideId", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response delete(@RequestParam("guideId") String guideId) {
-        return guideControllerInterface.delete(guideId);
+    @DeleteMapping(path = "/deleteGuide",params = "guideID",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Response> deleteGuide(@RequestParam("guideID")String guideID){
+        return  guideControllerInterface.deleteGuide(guideID);
     }
-
-    @GetMapping(path = "/fetchAllGuides", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response getAll() {
-        return guideControllerInterface.getAll();
+    @GetMapping(path = "/getAllGuides",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Response> getAllGuides(){
+        return  guideControllerInterface.getAllGuides();
+    }
+    @GetMapping(path = "/getByName",produces = MediaType.APPLICATION_JSON_VALUE,params="guideName")
+    public ResponseEntity<Response> getGuideBuGuideName(@RequestParam("guideName")String guideName){
+        System.out.println("Guide Name : "+guideName);
+        return  guideControllerInterface.getGuideBuGuideName(guideName);
     }
 }

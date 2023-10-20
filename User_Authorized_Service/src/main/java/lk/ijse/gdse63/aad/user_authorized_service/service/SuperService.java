@@ -2,19 +2,18 @@ package lk.ijse.gdse63.aad.user_authorized_service.service;
 
 import lk.ijse.gdse63.aad.user_authorized_service.dto.UserDTO;
 import lk.ijse.gdse63.aad.user_authorized_service.response.Response;
+import org.springframework.http.ResponseEntity;
 
 public interface SuperService<T extends UserDTO,ID> {
-    Response save(T t);
+    ResponseEntity<Response> save(T t);
 
-    Response update(T t);
+    ResponseEntity<Response> update(T t);
 
-    Response delete(ID id);
+    ResponseEntity<Response> delete(ID id);
 
-    Response search(ID id);
+    ResponseEntity<Response> search(ID id);
 
-    UserDTO getUserDetails(ID id);
+    ResponseEntity<Response> getAll(T t);
 
-    Response getAll();
 
-    Response createAndSendResponse(int statusCode, String message, Object data);
 }

@@ -23,4 +23,5 @@ public class UserDTO implements SuperDTO{
     private String gender;
     private String userNICimageLocation;
     private String userImageLocation;
+    private boolean isAuthenticated;
 }

@@ -4,7 +4,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lk.ijse.gdse63.aad.user_authorized_service.service.UserServiceIMPL;
+import lk.ijse.gdse63.aad.user_authorized_service.service.custom.impl.UserServiceIMPL;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -52,7 +52,7 @@ public class JWTAuthorizedFilter  extends OncePerRequestFilter {
         //Checking of the username's not nullability  and the authentication status of the current user.
         if (userName != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails user = userServiceIMPL.loadUserByUsername(userName);
-         /*   System.out.println("User : "+user.toString());*/
+            System.out.println("User : "+user.toString());
 
             if (JWTService.validateToken(jwtToken, user)) {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
