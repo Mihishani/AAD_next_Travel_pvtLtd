@@ -1,10 +1,12 @@
 package lk.ijse.gdse63.aad.hotel_service.endpoints;
 
 import lk.ijse.gdse63.aad.hotel_service.dto.HotelDTO;
+import lk.ijse.gdse63.aad.hotel_service.interfaces.PackageControllerInterface;
 import lk.ijse.gdse63.aad.hotel_service.response.Response;
 import lk.ijse.gdse63.aad.hotel_service.service.custom.HotelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,46 +15,63 @@ import java.util.List;
 @RequestMapping("")
 @CrossOrigin
 public class HotelController {
+/*
     @GetMapping(path = "/demo")
     public String getHello(){
         return "Helloooooo";
     }
+*/
 
     @Autowired
     private HotelService hotelService;
 
-    @PostMapping(path = "/save",consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response saveHotel(@RequestBody HotelDTO hotelDTO){
-        return hotelService.saveHotel(hotelDTO);
+    @Autowired
+    private PackageControllerInterface packageControllerInterface;
+
+    @PostMapping(path = "/saveHotel", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Response> saveHotel(@RequestBody HotelDTO hotelDTO) {
+        return hotelService.add(hotelDTO);
+
+
     }
 
-    @PutMapping(path = "/update", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response update(@RequestBody HotelDTO hotelDTO) {
+    @PutMapping(path = "/updateHotel", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Response> updateHotel(@RequestBody HotelDTO hotelDTO) {
         return hotelService.update(hotelDTO);
+
     }
 
-    @GetMapping(path = "/search", params = "hotelId", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response search(@RequestParam("hotelId") String hotelId) {
-        return hotelService.search(hotelId);
+    @GetMapping(path = "/searchHotel", params = "hotelID", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Response> searchHotel(@RequestParam("hotelID") String hotelID) {
+        return hotelService.search(hotelID);
+
     }
 
-    @DeleteMapping(path = "/delete", params = "hotelId", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response delete(@RequestParam("hotelId") String hotelId) {
-        return hotelService.delete(hotelId);
+    @DeleteMapping(path = "/deleteHotel", params = "hotelID", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Response> deleteHotel(@RequestParam("hotelID") String hotelID) {
+        ResponseEntity<Response> response = searchHotel(hotelID);
+        HotelDTO hotelDTO = (HotelDTO) response.getBody().getData();
+        hotelService.delete(hotelID);
+        return packageControllerInterface.deleteHotelID(hotelDTO.getPackageId(), hotelDTO.getHotelId());
+
     }
 
-    @GetMapping(path = "/fetchAll", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response getAll() {
+    @GetMapping(path = "/getAllHotels", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Response> getAllHotels() {
         return hotelService.getAll();
+
     }
 
-    @GetMapping(path = "/getHotel")
-    public HotelDTO getHotel(@RequestParam("hotelId") String hotelId) {
-        return hotelService.getHotel(hotelId);
+    @DeleteMapping(path = "/deleteAllHotels", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Response> deleteAllHotels(@RequestBody List<String> hotelIDs) {
+        return hotelService.deleteAllHotels(hotelIDs);
+
     }
 
-    @PutMapping( value = "/getHotelIds")
-    public Response getHotelIds(@RequestBody List<String> HotelIds){
-        return hotelService.deleteHotels(HotelIds);
+    @GetMapping(path = "/getHotelByHotelName", params = "hotelName", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Response> getHotelByName(@RequestParam("hotelName") String hotelName) {
+        return hotelService.findByHotelName(hotelName);
+
+
     }
 }
