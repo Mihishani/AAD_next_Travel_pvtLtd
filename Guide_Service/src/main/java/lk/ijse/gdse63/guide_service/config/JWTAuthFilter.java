@@ -4,7 +4,6 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,16 +22,16 @@ import java.util.List;
 @RequiredArgsConstructor
 
 public class JWTAuthFilter extends OncePerRequestFilter {
+
     @Autowired
-    private final HandlerExceptionResolver handlerExceptionResolver;
+   private final HandlerExceptionResolver handlerExceptionResolver;
     @Autowired
     private JWTService JWTService;
     public static String JWT_TOKEN;
 
-  
 
     @Override
-    protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         System.out.println("This is JWTAuthFilter."+request.getHeader("Authorization"));
         String authHeader = request.getHeader("Authorization");//Extracting the header.
         String jwtToken = null;
@@ -57,15 +56,15 @@ public class JWTAuthFilter extends OncePerRequestFilter {
         //Checking of the username's not nullability  and the authentication status of the current user.
         if (userName != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
-            if (JWTService.validateToken(jwtToken) && JWTService.getUserRole(jwtToken).equals("guideAdmin") || JWTService.getUserRole(jwtToken).equals("packageAdmin")) {
+            if (JWTService.validateToken(jwtToken) && JWTService.getUserRole(jwtToken).equals("A_GUIDE") || JWTService.getUserRole(jwtToken).equals("packageAdmin")) {
                 System.out.println("User role : "+JWTService.getUserRole(jwtToken));
-                    List<SimpleGrantedAuthority>simpleGrantedAuthorities=new ArrayList<>();
-                    simpleGrantedAuthorities.add(new SimpleGrantedAuthority(JWTService.getUserRole(jwtToken)));
-                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userName, null,simpleGrantedAuthorities);
-                    System.out.println("auth status: " + authToken.isAuthenticated());
-                    System.out.println("Here is user role : "+JWTService.getUserRole(jwtToken));
-                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                    SecurityContextHolder.getContext().setAuthentication(authToken);
+                List<SimpleGrantedAuthority> simpleGrantedAuthorities=new ArrayList<>();
+                simpleGrantedAuthorities.add(new SimpleGrantedAuthority(JWTService.getUserRole(jwtToken)));
+                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userName, null,simpleGrantedAuthorities);
+                System.out.println("auth status: " + authToken.isAuthenticated());
+                System.out.println("Here is user role : "+JWTService.getUserRole(jwtToken));
+                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                SecurityContextHolder.getContext().setAuthentication(authToken);
 
 
 

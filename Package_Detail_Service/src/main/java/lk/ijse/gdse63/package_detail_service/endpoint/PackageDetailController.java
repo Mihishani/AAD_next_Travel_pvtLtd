@@ -8,7 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("http://localhost:8081")
+@RequestMapping("/api/v1/packageDetail")
 @CrossOrigin
 public class PackageDetailController {
  /*   @GetMapping(path = "/demo")

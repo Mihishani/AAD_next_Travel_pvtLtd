@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("http://localhost:8081")
+@RequestMapping("/api/v1/vehicle")
 @CrossOrigin
 public class VehicleController {
 /*    @GetMapping(path = "/demo")

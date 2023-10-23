@@ -1,5 +1,6 @@
 package lk.ijse.gdse63.guide_service.config;
 
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -15,8 +16,8 @@ import java.util.Map;
 import java.util.function.Function;
 
 @Service
-public class JWTService {
-    private static final String SECRET_KEY = "C8A47F2B98E071F55A9676E16994C042D2A4D68EACDBBB72D866F8A75F91E406";
+public class JWTService  {
+    private static final String SECRET_KEY = "khBfXWLgglDDWijP3yIMNRTVLCus5BoLD9lGlyXTgtaOG68G7YreTCG4qATj9hkDWFkK0ADUJAy5+QG3KAUKR0hzjxcVFEMwYc7XnPH7JUIL+kfAYcPzlo2iT9ZzcNVz3/SnbrEELQ5x/arqataa4W6cxv6QAvuaAVxDEun53SebHriEs1t+XmOz88S2DUEMu+9QuPX7N5J/mOjutgr6LGrnm6dc/eln8/gzc6h4owY3euerPoFs/LzT0os/LXtEtI55W1H5HaiNtmr1HbSRgPzuYMMWr+npDKFpYsbq+SIHLlEtocFQdYaagosgcdUIibie6eLe8s9aKrYrcvJTDXxgyWYNWYGWs8CZ4ClCDzE=";
 
     public String extractUsername(String jwtToken) {
         return extractClaim(jwtToken, Claims::getSubject);
@@ -55,7 +56,10 @@ public class JWTService {
     public String generateToken(UserDetails userDetails) {
         return generateToken(new HashMap<>(), userDetails);
     }
-
+    public boolean validateToken(String jwtToken, UserDetails userDetails) {
+        final String username = extractUsername(jwtToken);
+        return (username.equals(userDetails.getUsername()) && !isTokenExpired(jwtToken));
+    }
 
     private boolean isTokenExpired(String jwtToken) {
         return extractExpiration(jwtToken).before(new Date());
@@ -67,6 +71,7 @@ public class JWTService {
 
     public String getUserRole(String jwtToken){
         return extractAllClaims(jwtToken).get("userRole").toString();
+
     }
 
     public boolean validateToken(String jwtToken) {

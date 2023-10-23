@@ -1,11 +1,10 @@
 package lk.ijse.gdse63.guide_service.advisor;
 
 
-
-
 import lk.ijse.gdse63.guide_service.response.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -15,7 +14,8 @@ import java.util.HashMap;
 
 @RestControllerAdvice
 @CrossOrigin
-public class GlobalExceptionHandler {
+public class Advisor {
+
     @Autowired
     private Response response;
 
@@ -42,5 +42,4 @@ public class GlobalExceptionHandler {
         return response;
 
     }
-
 }
