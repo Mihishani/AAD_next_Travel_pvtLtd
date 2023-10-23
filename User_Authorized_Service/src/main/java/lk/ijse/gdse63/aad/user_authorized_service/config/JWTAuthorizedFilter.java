@@ -34,30 +34,36 @@ public class JWTAuthorizedFilter  extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
+
+        System.out.println("This is JWTAuthFilter."+request.getHeader("Authorization"));
         String authHeader = request.getHeader("Authorization");//Extracting the header.
         String jwtToken = null;
         String userName;
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            System.out.println("No token found! - This is UAS.");
             filterChain.doFilter(request, response);
             return;
         }
         jwtToken = authHeader.substring(7);
+
+
         try {
             userName = JWTService.extractUsername(jwtToken);
-            System.out.println("Username : "+userName);
+            System.out.println("Username : " + userName);
         } catch (Exception exception) {
-            handlerExceptionResolver.resolveException(request, response, null, new RuntimeException("Invalid token : "+exception.getLocalizedMessage()));
+            handlerExceptionResolver.resolveException(request, response, null, new RuntimeException("Invalid token : " + exception.getLocalizedMessage()));
             return;
 
         }
         //Checking of the username's not nullability  and the authentication status of the current user.
         if (userName != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails user = userDetailsService.loadUserByUsername(userName);
-            System.out.println("User : "+user.toString());
+            System.out.println("User : " + user.toString());
 
             if (JWTService.validateToken(jwtToken, user)) {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
                 System.out.println("auth status: " + authToken.isAuthenticated());
+                System.out.println("Here is user role : "+JWTService.getUserRole(jwtToken));
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);
 
@@ -67,6 +73,7 @@ public class JWTAuthorizedFilter  extends OncePerRequestFilter {
 
         }
         filterChain.doFilter(request, response);
+
 
     }
 }

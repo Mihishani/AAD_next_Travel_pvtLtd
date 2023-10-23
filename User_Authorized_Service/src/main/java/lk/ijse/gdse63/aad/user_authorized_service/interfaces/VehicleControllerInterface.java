@@ -1,14 +1,11 @@
 package lk.ijse.gdse63.aad.user_authorized_service.interfaces;
 
 import lk.ijse.gdse63.aad.user_authorized_service.dto.VehicleDTO;
-import lk.ijse.gdse63.aad.user_authorized_service.model.Vehicles;
 import lk.ijse.gdse63.aad.user_authorized_service.response.Response;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
 
 @FeignClient("Vehicle_Service")
 public interface VehicleControllerInterface {

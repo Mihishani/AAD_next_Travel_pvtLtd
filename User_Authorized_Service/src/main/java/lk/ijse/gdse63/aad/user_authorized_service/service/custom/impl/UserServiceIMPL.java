@@ -49,7 +49,7 @@ public class UserServiceIMPL implements UserDetailsService, UserService {
     @Override
     public ResponseEntity<Response> save(UserDTO userDTO) {
         if (search(userDTO.getUserId()).getBody().getData() == null) {
-            userDTO.setPw(passwordEncoder.encode(userDTO.getPw()));
+            userDTO.setUserPassword(passwordEncoder.encode(userDTO.getUserPassword()));
 
             userRepo.save(modelMapper.map(userDTO, User.class));
             return createAndSendResponse(HttpStatus.CREATED.value(), "User Successfully saved and JWT successfully generated!", jwtService.generateToken(modelMapper.map(userDTO, User.class)));
@@ -93,7 +93,7 @@ public class UserServiceIMPL implements UserDetailsService, UserService {
     }
 
     @Override
-    public ResponseEntity<Response> getAll(UserDTO userDTO) {
+    public ResponseEntity<Response> getAll() {
         List<User> users = userRepo.findAll();
         if (users.isEmpty()) {
             return createAndSendResponse(HttpStatus.NOT_FOUND.value(), "Users not found!", null);
@@ -143,7 +143,7 @@ public class UserServiceIMPL implements UserDetailsService, UserService {
         Optional<User> user = userRepo.findByUserName(username);
         if(user.isPresent()){
             UserDTO userDTO = modelMapper.map(user.get(), UserDTO.class);
-            userDTO.setAuthenticated(passwordValidator(password,user.get().getPw()));
+            userDTO.setAuthenticated(passwordValidator(password,user.get().getUserPassword()));
             return createAndSendResponse(HttpStatus.OK.value(),"User successfully retrieved!",userDTO);
 
         }

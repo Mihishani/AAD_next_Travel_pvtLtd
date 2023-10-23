@@ -51,7 +51,7 @@ public class PackageDetailServiceImpl implements PackageDetailService {
     @Override
 /*    @PostMapping(path = "save",consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
    */ public Response save(PackageDetailDTO packageDetailDTO) {
-        if (search(packageDetailDTO.getPackagedetailId()).getData() == null) {
+        if (search(packageDetailDTO.getPackageDetailsId()).getData() == null) {
             packageDetailRepo.save(modelMapper.map(packageDetailDTO, Packagedetail.class));
             return createAndSendResponse(HttpStatus.OK.value(), "PackageDetail Successfully saved!", null);
         }
@@ -60,7 +60,7 @@ public class PackageDetailServiceImpl implements PackageDetailService {
 
     @Override
     public Response update(PackageDetailDTO packageDetailDTO) {
-        if (search(packageDetailDTO.getPackagedetailId()).getData() != null) {
+        if (search(packageDetailDTO.getPackageDetailsId()).getData() != null) {
             packageDetailRepo.save(modelMapper.map(packageDetailDTO, Packagedetail.class));
             return createAndSendResponse(HttpStatus.OK.value(), "PackageDetail Successfully updated!", null);
         }

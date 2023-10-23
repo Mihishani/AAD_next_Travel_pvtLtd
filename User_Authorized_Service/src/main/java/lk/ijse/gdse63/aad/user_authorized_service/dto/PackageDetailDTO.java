@@ -1,6 +1,7 @@
 package lk.ijse.gdse63.aad.user_authorized_service.dto;
 
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,6 +13,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Data
 public class PackageDetailDTO implements Serializable,SuperDTO {
+    @Valid
     private String packageDetailsId;
     private String packageId;
     private String packageCategory;

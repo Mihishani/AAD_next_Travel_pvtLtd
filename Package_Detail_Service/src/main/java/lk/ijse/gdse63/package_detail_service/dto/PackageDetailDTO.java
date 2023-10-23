@@ -31,4 +31,7 @@ public class PackageDetailDTO implements Serializable,SuperDTO {
     private String userId;
     private double paidValue;
     private String remarks;
+
+
+
 }
