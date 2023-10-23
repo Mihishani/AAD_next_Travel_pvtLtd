@@ -10,6 +10,7 @@ public class GuideServiceApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(GuideServiceApplication.class, args);
+        System.out.println("Guide-Service");
     }
 
 }

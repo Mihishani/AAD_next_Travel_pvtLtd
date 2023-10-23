@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("")
 @CrossOrigin
 public class GuideController {
-    @GetMapping(path = "/demo")
+/*    @GetMapping(path = "/demo")
     public String getHello(){
         return "Helloooooo";
-    }
+    }*/
 
     @Autowired
     private GuideService guideService;

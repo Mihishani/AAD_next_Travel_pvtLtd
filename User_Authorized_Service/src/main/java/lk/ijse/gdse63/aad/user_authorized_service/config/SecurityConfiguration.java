@@ -11,6 +11,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 
 @Configuration
@@ -29,12 +32,11 @@ public class SecurityConfiguration {
      /*   RequestMatcher matcher= new AntPathRequestMatcher("/api/v1/auth/register");*/
 
         http
-                .csrf()
-                .disable().authorizeRequests()
-                .requestMatchers("/api/v1/auth/register")
-                .permitAll()
-                .anyRequest()
-                .authenticated()
+                .csrf().disable()
+                .authorizeRequests()
+                .requestMatchers("/api/v1/auth/getAuth").permitAll()
+                .requestMatchers("/**").hasAnyAuthority("user", "userAdmin", "packageDetailsAdmin", "paymentsAdmin")
+                .anyRequest().authenticated()
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -43,7 +45,18 @@ public class SecurityConfiguration {
                 .addFilterBefore(jwtAuthorizedFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
+    }
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.addAllowedOrigin("*");
+        configuration.addAllowedMethod("*");
+        configuration.addAllowedHeader("*");
 
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+
+        return source;
 
     }
 }

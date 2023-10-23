@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,17 +48,24 @@ public class UserServiceIMPL implements UserDetailsService, UserService {
     private JWTService jwtService;
 
     @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Optional<User> user = userRepo.findByUserName(username);
+        return user.isPresent() ? user.get() : user.orElseThrow(() -> new UsernameNotFoundException("User not found!"));
+    }
+
+    @Override
     public ResponseEntity<Response> save(UserDTO userDTO) {
         if (search(userDTO.getUserId()).getBody().getData() == null) {
             userDTO.setUserPassword(passwordEncoder.encode(userDTO.getUserPassword()));
 
             userRepo.save(modelMapper.map(userDTO, User.class));
-            return createAndSendResponse(HttpStatus.CREATED.value(), "User Successfully saved and JWT successfully generated!", jwtService.generateToken(modelMapper.map(userDTO, User.class)));
+            HashMap<String,Object> userRoles= new HashMap<>();
+            userRoles.put("userRole",userDTO.getUserRole());
+            return createAndSendResponse(HttpStatus.CREATED.value(), "User Successfully saved and JWT successfully generated!", jwtService.generateToken(userRoles,modelMapper.map(userDTO, User.class)));
 
         }
 
         return createAndSendResponse(HttpStatus.CONFLICT.value(), "User already exists!", null);
-
     }
 
     @Override
@@ -68,6 +76,7 @@ public class UserServiceIMPL implements UserDetailsService, UserService {
         }
         userRepo.save(modelMapper.map(userDTO, User.class));
         return createAndSendResponse(HttpStatus.OK.value(), "User successfully updated!", null);
+
 
     }
 
@@ -83,13 +92,15 @@ public class UserServiceIMPL implements UserDetailsService, UserService {
     }
 
     @Override
-    public ResponseEntity<Response> search(String s) {
-        Optional<User> user = userRepo.findById(s);
+    public ResponseEntity<Response> search(String userId) {
+        Optional<User> user = userRepo.findById(userId);
         if (user.isPresent()) {
             return createAndSendResponse(HttpStatus.OK.value(), "User successfully retrieved!", modelMapper.map(user.get(), UserDTO.class));
 
         }
         return createAndSendResponse(HttpStatus.NOT_FOUND.value(), "User not found!", null);
+
+
     }
 
     @Override
@@ -105,6 +116,7 @@ public class UserServiceIMPL implements UserDetailsService, UserService {
 
         });
         return createAndSendResponse(HttpStatus.OK.value(), "Users successfully retrieved!", usersList);
+
     }
 
     @Override
@@ -116,6 +128,7 @@ public class UserServiceIMPL implements UserDetailsService, UserService {
 
     @Override
     public String handleUploads(MultipartFile imageFile) {
+        // Getting the file name.
         String fileName = imageFile.getOriginalFilename();
 
         // Specify the destination directory.In this case it is downloads.
@@ -139,7 +152,7 @@ public class UserServiceIMPL implements UserDetailsService, UserService {
     }
 
     @Override
-    public ResponseEntity<Response> getUserByUserName(String username, String password) {
+    public ResponseEntity<Response> getUserByUserName(String username,String password) {
         Optional<User> user = userRepo.findByUserName(username);
         if(user.isPresent()){
             UserDTO userDTO = modelMapper.map(user.get(), UserDTO.class);
@@ -151,13 +164,8 @@ public class UserServiceIMPL implements UserDetailsService, UserService {
     }
 
     @Override
-    public Boolean passwordValidator(String password, String hashedPassword) {
-        return passwordEncoder.matches(password,hashedPassword);
-    }
+    public Boolean passwordValidator(String password,String storedHashedPassword) {
+        return passwordEncoder.matches(password, storedHashedPassword);
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> user = userRepo.findByUserName(username);
-        return user.isPresent() ? user.get() : user.orElseThrow(() -> new UsernameNotFoundException("User not found!"));
     }
 }

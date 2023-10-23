@@ -1,4 +1,4 @@
-package lk.ijse.gdse63.aad.hotel_service.config;
+package lk.ijse.gdse63.guide_service.config;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

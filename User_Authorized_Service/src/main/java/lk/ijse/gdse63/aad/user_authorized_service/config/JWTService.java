@@ -56,11 +56,11 @@ public class JWTService {
 
 
     }
-    public String generateToken(UserDetails userDetails) {
+  /*  public String generateToken(UserDetails userDetails) {
         return generateToken(new HashMap<>(), userDetails);
     }
 
-
+*/
     public boolean validateToken(String jwtToken, UserDetails userDetails) {
         final String username = extractUsername(jwtToken);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(jwtToken));
