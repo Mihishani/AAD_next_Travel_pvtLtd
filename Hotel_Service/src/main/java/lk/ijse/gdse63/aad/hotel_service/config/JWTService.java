@@ -55,7 +55,10 @@ public class JWTService {
     public String generateToken(UserDetails userDetails) {
         return generateToken(new HashMap<>(), userDetails);
     }
-
+    public boolean validateToken(String jwtToken, UserDetails userDetails) {
+        final String username = extractUsername(jwtToken);
+        return (username.equals(userDetails.getUsername()) && !isTokenExpired(jwtToken));
+    }
 
     private boolean isTokenExpired(String jwtToken) {
         return extractExpiration(jwtToken).before(new Date());
@@ -67,6 +70,7 @@ public class JWTService {
 
     public String getUserRole(String jwtToken){
         return extractAllClaims(jwtToken).get("userRole").toString();
+
     }
 
     public boolean validateToken(String jwtToken) {

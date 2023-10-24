@@ -14,13 +14,12 @@ public class SecurityConfig {
     @Autowired
     private JWTAuthFilter jwtAuthFilter;
 
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .addFilterBefore(jwtAuthFilter, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
-                .requestMatchers("/**").hasAnyAuthority("hotelAdmin","packageAdmin")
+                .requestMatchers("/**").hasAnyAuthority("A_HOTEL","A_PACKAGE")
                 .anyRequest().permitAll()
 
                 .and()
@@ -28,7 +27,7 @@ public class SecurityConfig {
         return http.build();
 
     }
-
-
-
 }
+//eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyUm9sZSI6IkFfSE9URUwiLCJzdWIiOiJob3RlbGFkbWluIiwiaWF0IjoxNjk4MDY3MzYzLCJleHAiOjQ4NTE2NjczNjN9.tKHjcgdzWsQ6gXu4rBD33wZxFFPZQNmc9WvYcM89scU
+
+//eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyUm9sZSI6IkFfSE9URUwiLCJzdWIiOiJob3RlbEFkbWluIiwiaWF0IjoxNjk4MDY4MjgzLCJleHAiOjQ4NTE2NjgyODN9.gvI62fX0TSVJyO6JDlISC2yFHoZdGLF6lC2RGyD2exw

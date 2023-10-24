@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 public interface HotelService extends SuperService<HotelDTO,String> {
-    ResponseEntity<Response> deleteAllHotels(List<String> hotelIDList);
+    ResponseEntity<Response>deleteAllHotels(List<String> hotelIDList);
     ResponseEntity<Response> findByHotelName(String hotelName);
 
 }
