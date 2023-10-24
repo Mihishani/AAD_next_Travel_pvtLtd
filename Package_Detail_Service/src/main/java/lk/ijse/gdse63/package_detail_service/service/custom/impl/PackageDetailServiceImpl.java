@@ -2,7 +2,7 @@ package lk.ijse.gdse63.package_detail_service.service.custom.impl;
 
 import jakarta.transaction.Transactional;
 import lk.ijse.gdse63.package_detail_service.dto.*;
-import lk.ijse.gdse63.package_detail_service.entity.Packagedetail;
+import lk.ijse.gdse63.package_detail_service.entity.PackageDetail_entity;
 import lk.ijse.gdse63.package_detail_service.interfaces.*;
 import lk.ijse.gdse63.package_detail_service.repo.PackageDetailRepo;
 import lk.ijse.gdse63.package_detail_service.response.Response;
@@ -10,9 +10,8 @@ import lk.ijse.gdse63.package_detail_service.service.custom.PackageDetailService
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,141 +31,61 @@ public class PackageDetailServiceImpl implements PackageDetailService {
     @Autowired
     private PackageDetailRepo packageDetailRepo;
 
-    @Autowired
-    private GuideControllerInterface guideControllerInterface;
-
-    @Autowired
-    private HotelControllerInterface hotelControllerInterface;
-
-    @Autowired
-    private PackageControllerInterface packageControllerInterface;
-
-    @Autowired
-    private UserControllerInterface userControllerInterface;
-
-    @Autowired
-    private VehicleControllerInterface vehicleControllerInterface;
-
-
     @Override
-/*    @PostMapping(path = "save",consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
-   */ public Response save(PackageDetailDTO packageDetailDTO) {
-        if (search(packageDetailDTO.getPackageDetailsId()).getData() == null) {
-            packageDetailRepo.save(modelMapper.map(packageDetailDTO, Packagedetail.class));
-            return createAndSendResponse(HttpStatus.OK.value(), "PackageDetail Successfully saved!", null);
+    public ResponseEntity<Response> search(String id) {
+        Optional<PackageDetail_entity> packageDetailEntity=packageDetailRepo.findById(id);
+        if (packageDetailEntity.isPresent()){
+            return createAndSendResponse(HttpStatus.FOUND.value(),"Sucess", modelMapper.map(packageDetailEntity.get(),PackageDetailDTO.class));
         }
-        throw new RuntimeException("PackageDetail does not exists!");
+        return createAndSendResponse(HttpStatus.NOT_EXTENDED.value(), null,"No foound PackageDetaisl");
     }
 
     @Override
-    public Response update(PackageDetailDTO packageDetailDTO) {
-        if (search(packageDetailDTO.getPackageDetailsId()).getData() != null) {
-            packageDetailRepo.save(modelMapper.map(packageDetailDTO, Packagedetail.class));
-            return createAndSendResponse(HttpStatus.OK.value(), "PackageDetail Successfully updated!", null);
+    public ResponseEntity<Response> save(PackageDetailDTO packageDetailsDto) {
+        if (search(String.valueOf(packageDetailsDto.getPackageID())).getBody().getData()==null){
+            packageDetailRepo.save(modelMapper.map(packageDetailsDto,PackageDetail_entity.class));
+            return createAndSendResponse(HttpStatus.OK.value(), "Sucess",null);
         }
-        throw new RuntimeException("PackageDetail does not exists!");
+        throw new RuntimeException("No save packageDetails");
     }
 
     @Override
-    public Response delete(String id) {
-        if (search(id).getData() != null) {
-            packageDetailRepo.deleteById(id);
-            return createAndSendResponse(HttpStatus.OK.value(), "PackageDetail Successfully deleted!", null);
+    public ResponseEntity<Response> update(PackageDetailDTO packageDetailsDto) {
+        if (search(String.valueOf(packageDetailsDto.getPackageID())).getBody().getData()!=null){
+            packageDetailRepo.save(modelMapper.map(packageDetailsDto,PackageDetail_entity.class));
+            return createAndSendResponse(HttpStatus.OK.value(),"success",null);
         }
-        throw new RuntimeException("PackageDetail does not exists!");
-
+        throw new RuntimeException("packagedetails no update");
     }
 
     @Override
-    public Response search(String id) {
-        Optional<Packagedetail> packageDetail = packageDetailRepo.findById(id);
-        if (packageDetail.isPresent()) {
-            return createAndSendResponse(HttpStatus.FOUND.value(), "PackageDetail Successfully retrieved!", modelMapper.map(packageDetail.get(), PackageDetailDTO.class));
+    public ResponseEntity<Response> delete(String id) {
+        if (search(id).getBody().getData()!=null){
+             packageDetailRepo.deleteById(id);
+            return createAndSendResponse(HttpStatus.OK.value(), "Delete success",null);
         }
-        return createAndSendResponse(HttpStatus.NOT_FOUND.value(), "PackageDetail does not exists!", null);
-
+        throw new RuntimeException("NOT delete by id packagedetails");
     }
 
     @Override
-    public PackageDetailDTO getPackageDetail(String s) {
-        Optional<Packagedetail> packageDetail = packageDetailRepo.findById(s);
-
-        if (packageDetail.isPresent()) {
-            System.out.println(packageDetail.get());
-            return modelMapper.map(packageDetail.get(), PackageDetailDTO.class);
-        }
-        throw new RuntimeException("packagedetail cannot found!!!");
-
-    }
-
-    @Override
-    public Response getAll() {
-        List<Packagedetail>  packagedetails =  packageDetailRepo.findAll();
-        if (! packagedetails.isEmpty()) {
-            ArrayList<PackageDetailDTO>  packageDetailDTOS = new ArrayList<>();
-            packagedetails.forEach((packagedetail) -> {
-               packageDetailDTOS.add(modelMapper.map(packagedetail,PackageDetailDTO.class));
+    public ResponseEntity<Response> getAll() {
+        List<PackageDetail_entity>packageDetailEntities= packageDetailRepo.findAll();
+        if (packageDetailEntities.isEmpty()){
+            ArrayList<PackageDetailDTO>packageDetailsDtos=new ArrayList<>();
+            packageDetailEntities.forEach(packageDetailEntity -> {
+                packageDetailsDtos.add(modelMapper.map(packageDetailEntity,PackageDetailDTO.class));
             });
-            return createAndSendResponse(HttpStatus.FOUND.value(), "Package Detail Successfully retrieved!", packageDetailDTOS);
+            return createAndSendResponse(HttpStatus.OK.value(), "Sucess get All packagedetails",null);
         }
-        throw new RuntimeException("No Detail found in the database!");
+        throw new RuntimeException("no get allpackagedetails");
     }
 
     @Override
-    public Response createAndSendResponse(int statusCode, String message, Object data) {
-        response.setStatusCode(statusCode);
-        response.setMessage(message);
-        response.setData(data);
-        return response;
+    public ResponseEntity<Response> createAndSendResponse(int statusCode, String msg, Object data) {
+        return null;
     }
 
-    public GuidDTO getGuide(String s){
-        Optional<Packagedetail> packageDetail = packageDetailRepo.findById(s);
 
-        if (packageDetail.isPresent()){
-            return guideControllerInterface.getGuideDTO(packageDetail.get().getGuideId());
-        }
 
-        throw new RuntimeException("Cannot find package detail");
-    }
 
-    public HotelDTO getHotel(String s){
-        Optional<Packagedetail> packageDetail = packageDetailRepo.findById(s);
-
-        if (packageDetail.isPresent()){
-            return hotelControllerInterface.getHotel(packageDetail.get().getHotelId());
-        }
-
-        throw new RuntimeException("Cannot find hotel");
-    }
-
-    public PackageDTO getPackage(String s){
-        Optional<Packagedetail> packageDetail = packageDetailRepo.findById(s);
-
-        if (packageDetail.isPresent()){
-            return packageControllerInterface.getPackage(packageDetail.get().getPackageId());
-        }
-
-        throw new RuntimeException("Cannot find package");
-    }
-
-    public UserDTO getUser(String s){
-        Optional<Packagedetail> packageDetail = packageDetailRepo.findById(s);
-
-        if (packageDetail.isPresent()){
-            return userControllerInterface.getUserDetail(packageDetail.get().getUserId());
-        }
-
-        throw new RuntimeException("Cannot find user");
-    }
-
-    public VehicleDTO getVehicle(String s){
-        Optional<Packagedetail> packageDetail = packageDetailRepo.findById(s);
-
-        if (packageDetail.isPresent()){
-            return vehicleControllerInterface.getVehicle(packageDetail.get().getVehicleId());
-        }
-
-        throw new RuntimeException("Cannot find vehicle");
-    }
 }

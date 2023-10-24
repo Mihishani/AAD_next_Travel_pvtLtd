@@ -1,23 +1,28 @@
-package lk.ijse.gdse63.package_detail_service.dto;
+package lk.ijse.gdse63.package_detail_service.entity;
 
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
-import java.util.Date;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Builder
-public class PackageDetailDTO implements Serializable,SuperDTO {
+@Entity
+public class PackageDetail_entity {
+
+    //---------------------------
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private String packageID;
 
     private String packageCategory;
-
     private String travelDuration;
     private String travelArea;
     private String remark;
@@ -28,11 +33,10 @@ public class PackageDetailDTO implements Serializable,SuperDTO {
     private boolean isGuideNeeded;
     private double packageValue;
     private double packagePaidValue;
+
     private int hotelID;
     private int vehicleID;
     private int userID;
     private int guideID;
-
-
 
 }
