@@ -1,6 +1,5 @@
 package lk.ijse.gdse63.aad.user_authorized_service.config;
 
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -15,22 +14,18 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfiguration {
-
     @Autowired
-    private JWTAuthorizedFilter jwtAuthorizedFilter;
-
+    private JWTAuthFilter jwtAuthFilter;
     @Autowired
     private AuthenticationProvider authenticationProvider;
 
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-     /*   RequestMatcher matcher= new AntPathRequestMatcher("/api/v1/auth/register");*/
-
         http
                 .csrf().disable()
                 .authorizeRequests()
@@ -42,7 +37,7 @@ public class SecurityConfiguration {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authenticationProvider(authenticationProvider)
-                .addFilterBefore(jwtAuthorizedFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
@@ -57,6 +52,5 @@ public class SecurityConfiguration {
         source.registerCorsConfiguration("/**", configuration);
 
         return source;
-
-    }
+}
 }

@@ -3,8 +3,8 @@ package lk.ijse.gdse63.aad.user_authorized_service.service.custom.impl;
 import jakarta.transaction.Transactional;
 
 import lk.ijse.gdse63.aad.user_authorized_service.config.JWTService;
-import lk.ijse.gdse63.aad.user_authorized_service.dto.UserDTO;
-import lk.ijse.gdse63.aad.user_authorized_service.model.User;
+import lk.ijse.gdse63.aad.user_authorized_service.dto.User_dto;
+import lk.ijse.gdse63.aad.user_authorized_service.model.UserEntity;
 import lk.ijse.gdse63.aad.user_authorized_service.repo.UserRepo;
 import lk.ijse.gdse63.aad.user_authorized_service.response.Response;
 import lk.ijse.gdse63.aad.user_authorized_service.service.custom.UserService;
@@ -49,19 +49,19 @@ public class UserServiceIMPL implements UserDetailsService, UserService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> user = userRepo.findByUserName(username);
+        Optional<UserEntity> user = userRepo.findByUserName(username);
         return user.isPresent() ? user.get() : user.orElseThrow(() -> new UsernameNotFoundException("User not found!"));
     }
 
     @Override
-    public ResponseEntity<Response> save(UserDTO userDTO) {
+    public ResponseEntity<Response> save(User_dto userDTO) {
         if (search(userDTO.getUserId()).getBody().getData() == null) {
             userDTO.setUserPassword(passwordEncoder.encode(userDTO.getUserPassword()));
 
-            userRepo.save(modelMapper.map(userDTO, User.class));
+            userRepo.save(modelMapper.map(userDTO, UserEntity.class));
             HashMap<String,Object> userRoles= new HashMap<>();
             userRoles.put("userRole",userDTO.getUserRole());
-            return createAndSendResponse(HttpStatus.CREATED.value(), "User Successfully saved and JWT successfully generated!", jwtService.generateToken(userRoles,modelMapper.map(userDTO, User.class)));
+            return createAndSendResponse(HttpStatus.CREATED.value(), "User Successfully saved and JWT successfully generated!", jwtService.generateToken(userRoles,modelMapper.map(userDTO, UserEntity.class)));
 
         }
 
@@ -69,12 +69,12 @@ public class UserServiceIMPL implements UserDetailsService, UserService {
     }
 
     @Override
-    public ResponseEntity<Response> update(UserDTO userDTO) {
+    public ResponseEntity<Response> update(User_dto userDTO) {
         if (search(userDTO.getUserId()).getBody().getData() == null) {
             return createAndSendResponse(HttpStatus.NOT_FOUND.value(), "User not found!", null);
 
         }
-        userRepo.save(modelMapper.map(userDTO, User.class));
+        userRepo.save(modelMapper.map(userDTO, UserEntity.class));
         return createAndSendResponse(HttpStatus.OK.value(), "User successfully updated!", null);
 
 
@@ -93,9 +93,9 @@ public class UserServiceIMPL implements UserDetailsService, UserService {
 
     @Override
     public ResponseEntity<Response> search(String userId) {
-        Optional<User> user = userRepo.findById(userId);
+        Optional<UserEntity> user = userRepo.findById(userId);
         if (user.isPresent()) {
-            return createAndSendResponse(HttpStatus.OK.value(), "User successfully retrieved!", modelMapper.map(user.get(), UserDTO.class));
+            return createAndSendResponse(HttpStatus.OK.value(), "User successfully retrieved!", modelMapper.map(user.get(), User_dto.class));
 
         }
         return createAndSendResponse(HttpStatus.NOT_FOUND.value(), "User not found!", null);
@@ -105,14 +105,14 @@ public class UserServiceIMPL implements UserDetailsService, UserService {
 
     @Override
     public ResponseEntity<Response> getAll() {
-        List<User> users = userRepo.findAll();
+        List<UserEntity> users = userRepo.findAll();
         if (users.isEmpty()) {
             return createAndSendResponse(HttpStatus.NOT_FOUND.value(), "Users not found!", null);
 
         }
-        List<UserDTO> usersList = new ArrayList<>();
+        List<User_dto> usersList = new ArrayList<>();
         users.forEach((user) -> {
-            usersList.add(modelMapper.map(user, UserDTO.class));
+            usersList.add(modelMapper.map(user, User_dto.class));
 
         });
         return createAndSendResponse(HttpStatus.OK.value(), "Users successfully retrieved!", usersList);
@@ -153,9 +153,9 @@ public class UserServiceIMPL implements UserDetailsService, UserService {
 
     @Override
     public ResponseEntity<Response> getUserByUserName(String username,String password) {
-        Optional<User> user = userRepo.findByUserName(username);
+        Optional<UserEntity> user = userRepo.findByUserName(username);
         if(user.isPresent()){
-            UserDTO userDTO = modelMapper.map(user.get(), UserDTO.class);
+            User_dto userDTO = modelMapper.map(user.get(), User_dto.class);
             userDTO.setAuthenticated(passwordValidator(password,user.get().getUserPassword()));
             return createAndSendResponse(HttpStatus.OK.value(),"User successfully retrieved!",userDTO);
 

@@ -1,19 +1,18 @@
 package lk.ijse.gdse63.vehicle_service.service.custom.impl;
 
 import jakarta.transaction.Transactional;
-import lk.ijse.gdse63.vehicle_service.dto.VehicleDTO;
-import lk.ijse.gdse63.vehicle_service.entity.Vehicles;
+import lk.ijse.gdse63.vehicle_service.dto.Vehicle_dto;
+import lk.ijse.gdse63.vehicle_service.entity.Vehicle_entity;
 import lk.ijse.gdse63.vehicle_service.interfaces.PackageControllerInterface;
-import lk.ijse.gdse63.vehicle_service.repo.VehicleRepo;
+import lk.ijse.gdse63.vehicle_service.repo.Vehicle_repo;
 import lk.ijse.gdse63.vehicle_service.response.Response;
-import lk.ijse.gdse63.vehicle_service.service.SuperService;
 import lk.ijse.gdse63.vehicle_service.service.custom.VehicleService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,107 +24,103 @@ import java.util.Optional;
 public class VehicleServiceImpl implements VehicleService {
 
     @Autowired
-    private Response response;
+    private Vehicle_repo vehicleRepo;
+
     @Autowired
-    private VehicleRepo vehicleRepo;
+    private Response response;
+
 
     @Autowired
     private ModelMapper modelMapper;
 
-    @Autowired
-    private PackageControllerInterface packageControllerInterface;
+
+    @Override
+    public ResponseEntity<Response> search(String id) {
+        Optional<Vehicle_entity> vehicleEntity=vehicleRepo.findById(id);
+        if (vehicleEntity.isPresent()){
+            return createAndSendResponse(HttpStatus.FOUND.value(), "sucsss",modelMapper.map(vehicleEntity.get(), Vehicle_dto.class));
+        }
+        return createAndSendResponse(HttpStatus.NOT_EXTENDED.value(), "error found vehicle",null);
+    }
+
+    @Override
+    public ResponseEntity<Response> save(Vehicle_dto vehicleDto) {
+        if (search(vehicleDto.getVehicleID()).getBody().getData()==null){
+            vehicleRepo.save(modelMapper.map(vehicleDto,Vehicle_entity.class));
+            return createAndSendResponse(HttpStatus.OK.value(),null,"save ok vehicle");
+        }
+        throw new RuntimeException("Vehicale save not ok");
+    }
 
 
 
     @Override
-/*    @PostMapping(path = "save",consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
-   */ public Response save(VehicleDTO vehicleDTO) {
-        if (search(vehicleDTO.getVehicleId()).getData() == null) {
-            packageControllerInterface.getVehicleIds(vehicleDTO.getVehicleId(),vehicleDTO.getPackageId());
+    public ResponseEntity<Response> update(Vehicle_dto vehicleDto) {
+        Optional<Vehicle_entity> existingVehicle = vehicleRepo.findById(vehicleDto.getVehicleID());
 
-            vehicleRepo.save(modelMapper.map(vehicleDTO, Vehicles.class));
-            return createAndSendResponse(HttpStatus.OK.value(), "Vehicle Successfully saved!", null);
+        if (existingVehicle.isPresent()) {
+            // The vehicle with the given ID exists, so update it
+            Vehicle_entity updatedEntity = modelMapper.map(vehicleDto, Vehicle_entity.class);
+            updatedEntity.setVehicleID(vehicleDto.getVehicleID()); // Set the ID to ensure an update
+            vehicleRepo.save(updatedEntity);
+            return createAndSendResponse(HttpStatus.OK.value(), null, "Vehicle updated successfully");
+        } else {
+            // The vehicle with the given ID does not exist, so create a new entry
+            Vehicle_entity newEntity = modelMapper.map(vehicleDto, Vehicle_entity.class);
+            vehicleRepo.save(newEntity);
+            return createAndSendResponse(HttpStatus.OK.value(), null, "Vehicle created successfully");
         }
-        throw new RuntimeException("Vehicle does not exists!");
-  }
-
-    @Override
-    public Response update(VehicleDTO vehicleDTO) {
-
-        if (search(vehicleDTO.getVehicleId()).getData() != null) {
-            vehicleRepo.save(modelMapper.map(vehicleDTO, Vehicles.class));
-            return createAndSendResponse(HttpStatus.OK.value(), "Vehicle Successfully updated!", null);
-        }
-        throw new RuntimeException("Vehicle does not exists!");
-
     }
 
 
     @Override
-    public Response delete(String o) {
-        if (search(o).getData() != null) {
-            Optional<Vehicles> vehicle = vehicleRepo.findById(o);
-            packageControllerInterface.getVehicleIdsForDeleteHotel(vehicle.get().getVehicleId(),vehicle.get().getPackageId());
-
-            vehicleRepo.deleteById(o);
-            return createAndSendResponse(HttpStatus.OK.value(), "Vehicle Successfully deleted!", null);
+    public ResponseEntity<Response> delete(String id) {
+        if(search(id).getBody().getData()!=null){
+            vehicleRepo.deleteById(id);
+            return createAndSendResponse(HttpStatus.OK.value(),null,"Sucess delete vehi");
         }
-        throw new RuntimeException("Vehicle does not exists!");
-
+        throw new RuntimeException("Not found!!!!");
     }
 
     @Override
-    public Response search(String o) {
-        Optional<Vehicles> vehicles = vehicleRepo.findById(o);
-        if (vehicles.isPresent()) {
-            return createAndSendResponse(HttpStatus.FOUND.value(), "Vehicle Successfully retrieved!", modelMapper.map(vehicles.get(),VehicleDTO.class));
-        }
-        return createAndSendResponse(HttpStatus.NOT_FOUND.value(), "Vehicle does not exists!", null);
-
-    }
-
-    @Override
-    public Response getAll() {
-        List<Vehicles> vehicles = vehicleRepo.findAll();
-        if (!vehicles.isEmpty()) {
-            ArrayList<VehicleDTO> vehicleDTOS = new ArrayList<>();
-            vehicles.forEach((vehicles1) -> {
-                vehicleDTOS.add(modelMapper.map(vehicles1, VehicleDTO.class));
+    public ResponseEntity<Response> getAll() {
+        List<Vehicle_entity>vehicleEntities=vehicleRepo.findAll();
+        if (!vehicleEntities.isEmpty()){
+            ArrayList<Vehicle_dto>vehicleDtos=new ArrayList<>();
+            vehicleEntities.forEach(vehicleEntity -> {
+                vehicleDtos.add(modelMapper.map(vehicleEntity,Vehicle_dto.class));
             });
-            return createAndSendResponse(HttpStatus.FOUND.value(), "Vehicle Successfully retrieved!", vehicleDTOS);
+            return createAndSendResponse(HttpStatus.FOUND.value(),"Sucess",vehicleDtos);
         }
-        throw new RuntimeException("No Vehicle found in the database!");
-
+        throw new RuntimeException("No found all");
     }
 
     @Override
-    public VehicleDTO getVehicle(String id) {
-        Optional<Vehicles> vehicle= vehicleRepo.findById(id);
-
-        if (vehicle.isPresent()) {
-            System.out.println(vehicle.get());
-            return modelMapper.map(vehicle.get(), VehicleDTO.class);
-        }
-        throw new RuntimeException("vehicle cannot found!!!");
-
-    }
-
-    @Override
-    public Response deleteVehicles(List<String> vehicleIds) {
-        System.out.println(vehicleIds);
-        for (String vehicleId : vehicleIds) {
-            vehicleRepo.deleteById(vehicleId);
-            return createAndSendResponse(HttpStatus.OK.value(), "Vehicle"+vehicleId+" deleted!", null);
-        }
-        return createAndSendResponse(HttpStatus.OK.value(), "ooppsss!", null);
-
-    }
-
-    @Override
-    public Response createAndSendResponse(int statusCode, String message, Object data) {
+    public ResponseEntity<Response> createAndSendResponse(int statusCode, String msg, Object data) {
         response.setStatusCode(statusCode);
-        response.setMessage(message);
+        response.setMessage(msg);
         response.setData(data);
-        return response;
+        System.out.println("Status Code : " + statusCode);
+        System.out.println("Sent : " + HttpStatus.valueOf(statusCode));
+
+        return new ResponseEntity<>(response, HttpStatusCode.valueOf(statusCode));
+
     }
+
+    @Override
+    public ResponseEntity<Response> deleteAllVehicle(List<String> vehicleIDList) {
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<Response> findByVehicleName(String vehicleName) {
+        Optional<Vehicle_entity> vehi = vehicleRepo.findByVehicleName(vehicleName);
+        if (vehi.isPresent()) {
+            return createAndSendResponse(HttpStatus.OK.value(), "vehicleName Successfully retrieved!", modelMapper.map( vehi.get(), Vehicle_dto.class));
+
+        }
+        return createAndSendResponse(HttpStatus.NOT_FOUND.value(), "Hotel Not Found!", null);
+    }
+
+
 }

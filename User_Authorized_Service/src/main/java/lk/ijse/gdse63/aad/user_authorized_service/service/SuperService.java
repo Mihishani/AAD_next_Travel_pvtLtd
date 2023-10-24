@@ -1,11 +1,10 @@
 package lk.ijse.gdse63.aad.user_authorized_service.service;
 
-import lk.ijse.gdse63.aad.user_authorized_service.dto.SuperDTO;
-import lk.ijse.gdse63.aad.user_authorized_service.dto.UserDTO;
+import lk.ijse.gdse63.aad.user_authorized_service.dto.SuperDto;
 import lk.ijse.gdse63.aad.user_authorized_service.response.Response;
 import org.springframework.http.ResponseEntity;
 
-public interface SuperService<T extends SuperDTO,ID> {
+public interface SuperService<T extends SuperDto,ID> {
     ResponseEntity<Response> save(T t);
 
     ResponseEntity<Response> update(T t);
