@@ -10,6 +10,7 @@ public class PackageServiceApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(PackageServiceApplication.class, args);
+        System.out.println("PACKAGE-SERVER IS RUNNING!!!");
     }
 
 }

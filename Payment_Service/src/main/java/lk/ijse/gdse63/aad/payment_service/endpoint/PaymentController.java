@@ -1,46 +1,44 @@
 package lk.ijse.gdse63.aad.payment_service.endpoint;
 
-import lk.ijse.gdse63.aad.payment_service.dto.PaymentDTO;
+import lk.ijse.gdse63.aad.payment_service.dto.Payment_dto;
 import lk.ijse.gdse63.aad.payment_service.response.Response;
 import lk.ijse.gdse63.aad.payment_service.service.custom.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/payment")
+@CrossOrigin(origins = "http://localhost:8080")
 public class PaymentController {
 
     @Autowired
     private PaymentService paymentService;
 
-    @PostMapping(path = "/save", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Response savePayment(@RequestBody PaymentDTO paymentDTO) {
-        return paymentService.savePayment(paymentDTO);
+    @GetMapping(path = "PGet",params = "PayID",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Response> get(@RequestParam("PayID") String PayID){
+        System.out.println("payment search");
+        return paymentService.search(PayID);
     }
 
-    @PutMapping(path = "/update", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response update(@RequestBody PaymentDTO paymentDTO) {
-        return paymentService.update(paymentDTO);
+    @PostMapping(path = "PSave",consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Response> save(@RequestBody Payment_dto paymentDto){
+        System.out.println("save payment");
+        return paymentService.save(paymentDto);
     }
 
-    @GetMapping(path = "/search", params = "paymentId", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response search(@RequestParam("paymentId") String paymentId) {
-        return paymentService.search(paymentId);
+    @PutMapping(path = "Pput",produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Response> update(@RequestBody Payment_dto paymentDto){
+        System.out.println("put payment");
+        return paymentService.save(paymentDto);
     }
 
-    @DeleteMapping(path = "/delete", params = "paymentId", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response delete(@RequestParam("paymentId") String paymentId) {
-        return paymentService.delete(paymentId);
+    @DeleteMapping(path = "Pdelet",params = "PayID",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Response> delete(@RequestParam("PayID") String PayID){
+        System.out.println("PayID delete ok");
+        return paymentService.delete(PayID);
     }
 
-    @GetMapping(path = "/getPayment")
-    public PaymentDTO getPayment(@RequestParam("paymentId") String paymentId) {
-        return paymentService.getPayment(paymentId);
-    }
 
-    @GetMapping(path = "/fetchAll", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response getAll() {
-        return paymentService.getAll();
-    }
 }
