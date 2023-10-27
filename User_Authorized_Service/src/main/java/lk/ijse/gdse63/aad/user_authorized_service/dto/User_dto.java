@@ -43,4 +43,22 @@ public class User_dto implements Serializable ,SuperDto {
     private String userImageLocation;
 
     private boolean isAuthenticated;
+
+
+
+    /* "userRole" : "jhvbj",
+    "userId" : "fdjbv",
+    "name" : "jfvbj",
+    "userName" : "jhfv",
+    "userPassword" : "jhfvbj",
+    "userNIC" : "jdfj",
+    "userNICImageLocation" : "kjfvk",
+    "userAge" : 56,
+    "gender" : "male",
+    "userEmail" : "jhfbr",
+    "userPhone" : "gbg",
+    "userAddress" : "jvf",
+    "remarks" : "hjfbg",
+    "userImageLocation" : "jhfbvjd",
+    "isAuthenticated" : true*/
 }
