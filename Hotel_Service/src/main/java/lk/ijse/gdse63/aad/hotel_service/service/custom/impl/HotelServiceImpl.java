@@ -39,8 +39,8 @@ public  class HotelServiceImpl implements HotelService {
     public ResponseEntity<Response> add(HotelDTO hotelDTO) {
         if (search(hotelDTO.getHotelId()).getBody().getData() == null) {
             hotelRepo.save(modelMapper.map(hotelDTO, Hotel_entity.class));
-             HotelDTO dto = (HotelDTO) findByHotelName(hotelDTO.getHotelName()).getBody().getData();
-            packageInterface.saveHotelID(hotelDTO.getPackageId(), dto.getHotelId());
+         /*    HotelDTO dto = (HotelDTO) findByHotelName(hotelDTO.getHotelName()).getBody().getData();*/
+          /*  packageInterface.saveHotelID(hotelDTO.getPackageId(), dto.getHotelId());*/
             return createAndSendResponse(HttpStatus.CREATED.value(), "Hotel Successfully saved!", true);
 
         }
@@ -49,7 +49,7 @@ public  class HotelServiceImpl implements HotelService {
 
     @Override
     public ResponseEntity<Response> update(HotelDTO hotelDTO) {
-        if (search(hotelDTO.getHotelId()).getBody().getData() == null) {
+       /* if (search(hotelDTO.getHotelId()).getBody().getData() == null) {
             return createAndSendResponse(HttpStatus.NOT_FOUND.value(), "Hotel Not Found!", null);
 
         }
@@ -60,7 +60,22 @@ public  class HotelServiceImpl implements HotelService {
 
 
         }
-        return createAndSendResponse(HttpStatus.OK.value(), "Hotel Successfully updated!", null);
+        return createAndSendResponse(HttpStatus.OK.value(), "Hotel Successfully updated!", null);*/
+
+        Optional<Hotel_entity> existingVehicle = hotelRepo.findById(hotelDTO.getHotelId());
+
+        if (existingVehicle.isPresent()) {
+            // The vehicle with the given ID exists, so update it
+             Hotel_entity updatedEntity = modelMapper.map( hotelDTO, Hotel_entity.class);
+            updatedEntity.setHotelId(hotelDTO.getHotelId()); // Set the ID to ensure an update
+             hotelRepo.save(updatedEntity);
+            return createAndSendResponse(HttpStatus.OK.value(), null, "Hotel updated successfully");
+        } else {
+            // The vehicle with the given ID does not exist, so create a new entry
+            Hotel_entity newEntity = modelMapper.map( hotelDTO,  Hotel_entity.class);
+             hotelRepo.save(newEntity);
+            return createAndSendResponse(HttpStatus.OK.value(), null, "Hotel created successfully");
+        }
 
 
     }

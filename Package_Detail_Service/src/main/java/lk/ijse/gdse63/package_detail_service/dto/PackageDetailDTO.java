@@ -34,5 +34,21 @@ public class PackageDetailDTO implements Serializable,SuperDTO {
     private int guideID;
 
 
+   /* "packageID" : "001",
+    "packageCategory" : "Luxury",
+    "travelDuration" : "jb",
+    "travelArea" : "Sigiriya",
+    "remark" : "good",
+    "noOfAdults" : 1,
+    "noOfChildren" : 3,
+    "totalHeadCount" : 7,
+    "isPetsAllowed" : true,
+    "isGuideNeeded" : true,
+    "packageValue" : 180000.00,
+    "packagePaidValue" : 180000.00,
+    "hotelID" : 003,
+    "vehicleID" : 0004,
+    "userID" : 005,
+    "guideID" : 006*/
 
 }

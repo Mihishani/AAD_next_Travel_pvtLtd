@@ -40,19 +40,17 @@ public class Guide_dto implements Serializable {
 
 
 
-
-/*    "guideID" : "hdfj",
-    "guideName" : "dbghd",
-    "guideAddress" : "vbfd",
-    "guideAge" : "jhdvbgj",
-    "guideGender" : "gvgh",
-    "guidePICIMGLocation" : "jgvbdj",
+ /*
+ *  "guideID" : "002",
+    "guideName" : "Guide-Service",
+    "guideAddress" : "colombo",
+    "guideAge" : "23",
+    "guideGender" : "Female",
+    "guidePICIMGLocation" : "jjfg",
     "guideNICIMGLocation" : "vhsdf",
     "guideIDIMGLocation" : "iohgo",
     "guideExperience" : "fhb",
     "manDayValue" : 78,
-    "remark" : "bgt"*/
-
-
+    "remark" : "good"*/
 
 }

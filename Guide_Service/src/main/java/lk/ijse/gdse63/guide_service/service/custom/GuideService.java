@@ -19,4 +19,5 @@ public interface GuideService<T extends Guide_dto,ID> {
         ResponseEntity <Response>getAll();
         ResponseEntity<Response> createAndSendResponse(int statusCode, String msg, Object data);
 
+/*    ResponseEntity<Response> getGuideByName(String guideName);*/
 }

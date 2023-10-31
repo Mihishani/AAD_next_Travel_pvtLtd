@@ -43,9 +43,16 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public ResponseEntity<Response> save(Payment_dto paymentDto) {
+      /*  if (search(paymentDto.getPayID()).getBody().getData()==null){
+            paymentRepo.save(modelMapper.map(paymentDto,Payment_entity.class));
+            return createAndSendResponse(HttpStatus.CREATED.value(), "save payment" ,true);
+        }
+        throw new RuntimeException(" no save payment");
+      *//*  return createAndSendResponse(HttpStatus.CONFLICT.value(), "No save payment!", false);*/
+
         if (search(paymentDto.getPayID()).getBody().getData()==null){
             paymentRepo.save(modelMapper.map(paymentDto,Payment_entity.class));
-            return createAndSendResponse(HttpStatus.FOUND.value(),null,"save payment");
+            return createAndSendResponse(HttpStatus.OK.value(),"Success", null);
         }
         throw new RuntimeException(" no save payment");
     }
@@ -54,7 +61,7 @@ public class PaymentServiceImpl implements PaymentService {
     public ResponseEntity<Response> update(Payment_dto paymentDto) {
         if (search(paymentDto.getPayID()).getBody().getData()!=null){
             paymentRepo.save(modelMapper.map(paymentDto,Payment_entity.class));
-            return createAndSendResponse(HttpStatus.FOUND.value(),null,"update payment");
+            return createAndSendResponse(HttpStatus.OK.value(),null,"update payment");
         }
         throw new RuntimeException(" no update payment");
     }

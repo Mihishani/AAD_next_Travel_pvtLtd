@@ -46,7 +46,23 @@ public class Vehicle_dto implements Serializable,SuperDto{
     private String remarks;
 
 
-    //others
+  /*  "vehicleID"
+    "vehicleBrand"
+    "vehicleName"
+    "vehicleCategory"
+    "fuelType"
+    "hybrid"
+    "fuelUsage"
+    "vehicleImg"
+    "vehicleInteriorImg"
+    "seatCapacity"
+    "transmissionType"
+     "driverName"
+    "conNumber"
+    "driverlicenseImg"
+    "remarks"
+
+*/
 
 
 

@@ -1,5 +1,6 @@
 package lk.ijse.gdse63.aad.payment_service.dto;
 
+
 import lombok.*;
 
 import java.io.Serializable;
@@ -7,8 +8,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Data
 @Builder
-@ToString
-public class Payment_dto implements Serializable {
+public class Payment_dto implements Serializable,SuperDTO {
 
     private String payID;
 
@@ -18,3 +18,9 @@ public class Payment_dto implements Serializable {
     private int WeeklyIncome;
 
 }
+
+/*  "payID" : "P001",
+    "DailyIncome" : 1000,
+    "AnnualIncome" : 1000,
+    "MonthlyIncome" : 20000,
+    "WeeklyIncome" : 1000*/

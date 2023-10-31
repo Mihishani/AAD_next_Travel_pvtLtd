@@ -18,7 +18,6 @@ public class Hotel_entity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String hotelId;
-    private  String packageId;
     private String hotelName;
     private String hotelCategory;
     private String hotelLocation;
@@ -34,6 +33,7 @@ public class Hotel_entity {
     private boolean isPetsAllowed;
     private double hotelFee;
     private String cancellationCriteria;
+    private String packageId;
     private String remarks;
 
 }

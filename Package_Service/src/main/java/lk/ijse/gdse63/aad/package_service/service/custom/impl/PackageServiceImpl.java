@@ -125,7 +125,7 @@ public class PackageServiceImpl implements PackageService {
         List<String> vehicles = Collections.singletonList(packageFiegnInterfaec.getAllVehicles(id).getBody());
 
         Package_entity packageEntity=new Package_entity();
-        packageEntity.setVehical_id(Collections.singletonList("V0124445"));
+        packageEntity.setVehicalList(Collections.singletonList("V0124445"));
         // Here you can add logic to process the 'vehicles' data
         packageRepo.save(packageEntity);
 

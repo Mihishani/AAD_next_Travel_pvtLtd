@@ -46,19 +46,31 @@ public class User_dto implements Serializable ,SuperDto {
 
 
 
-    /* "userRole" : "jhvbj",
-    "userId" : "fdjbv",
-    "name" : "jfvbj",
+
+    /*    "userRole" : "Frimeshani",
+    "userId" : "001",
+    "name" : "Hakuna matata",
     "userName" : "jhfv",
     "userPassword" : "jhfvbj",
     "userNIC" : "jdfj",
     "userNICImageLocation" : "kjfvk",
     "userAge" : 56,
-    "gender" : "male",
+    "gender" : "MALE",
     "userEmail" : "jhfbr",
     "userPhone" : "gbg",
     "userAddress" : "jvf",
     "remarks" : "hjfbg",
     "userImageLocation" : "jhfbvjd",
-    "isAuthenticated" : true*/
+    "isAuthenticated" : false*/
+
+
+
+
+    /*"eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyUm9sZSI6IkZyaW1lc2hhbmkiLCJzdWIiOiJqaGZ2IiwiaWF0IjoxNjk4NDA5ODc0LCJleHAiOjQ4NTIwMDk4NzR9.8huoSHr8hFGuuJMnmkFp4gILmx878UGO1N6kXpiMIcc"*/
+
+    /*{
+    "statusCode": 0,
+    "message": "User Successfully saved and JWT successfully generated!",
+    "data": "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyUm9sZSI6IkZyaW1lc2hhbmkiLCJzdWIiOiJqaGZ2IiwiaWF0IjoxNjk4NDA5ODc0LCJleHAiOjQ4NTIwMDk4NzR9.8huoSHr8hFGuuJMnmkFp4gILmx878UGO1N6kXpiMIcc"
+}*/
 }

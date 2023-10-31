@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/package")
-@CrossOrigin(origins = "http://localhost:8080")
+@CrossOrigin
+//        (origins = "http://localhost:8080")
 public class PackageController {
 
     PackageController(){

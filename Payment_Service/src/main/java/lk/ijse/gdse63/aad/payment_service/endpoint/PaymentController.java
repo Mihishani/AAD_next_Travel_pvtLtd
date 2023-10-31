@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/payment")
-@CrossOrigin(origins = "http://localhost:8080")
+@CrossOrigin
 public class PaymentController {
 
     @Autowired
@@ -22,7 +22,7 @@ public class PaymentController {
         return paymentService.search(PayID);
     }
 
-    @PostMapping(path = "PSave",consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/PSave",consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Response> save(@RequestBody Payment_dto paymentDto){
         System.out.println("save payment");
         return paymentService.save(paymentDto);

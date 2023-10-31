@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("")
+@RequestMapping("api/v1/hotel")
 @CrossOrigin
 public class HotelController {
 /*
@@ -22,9 +22,9 @@ public class HotelController {
     }
 */
 
-    HotelController(){
+/*    HotelController(){
         System.out.println("Hotel api class Run!!");
-    }
+    }*/
 
     @Autowired
     private HotelService hotelService;
@@ -33,13 +33,13 @@ public class HotelController {
     private PackageInterface packageInterface;
 
 
-    @PostMapping(path = "h_save",consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/hsave",consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Response>save( @RequestBody HotelDTO hotelDto){
         System.out.println("Hotel save working");
         return hotelService.add(hotelDto);
     }
 
-    @PutMapping(path = "h_put",consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(path = "/hput",consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Response> update(@RequestBody HotelDTO hotelDto){
         System.out.println("Hotel update working");
         return hotelService.update(hotelDto);
@@ -47,10 +47,10 @@ public class HotelController {
 
     @DeleteMapping(path = "H_Delete",params = "H_ID",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Response> delete( @RequestParam("H_ID") String H_ID){
-        ResponseEntity<Response> response = search(H_ID);
-        HotelDTO hotelDTO = (HotelDTO) response.getBody().getData();
-        hotelService.delete(H_ID);
-        return packageInterface.deleteHotelID(hotelDTO.getPackageId(),hotelDTO.getHotelId());
+/*        ResponseEntity<Response> response = search(H_ID);
+        HotelDTO hotelDTO = (HotelDTO) response.getBody().getData();*/
+       return hotelService.delete(H_ID);
+       /* return packageInterface.deleteHotelID(hotelDTO.getPackageId(),hotelDTO.getHotelId());*/
     }
     @GetMapping(path = "/getAllHotels",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Response>getAllHotels(){

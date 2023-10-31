@@ -38,8 +38,8 @@ public class GuideController {
     }
 
     @DeleteMapping(path = "Gdelete",params = "guideID",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity delete(@RequestParam("guideID") String guideID){
-        System.out.println("Guide delete ok"+guideID);
+    public ResponseEntity<Response> delete(@RequestParam("guideID") String guideID){
+       /* System.out.println("Guide delete ok"+guideID);*/
         return guideService.delete(guideID);
     }
 
@@ -47,6 +47,21 @@ public class GuideController {
     public ResponseEntity<Response>getGuideByName(@RequestParam("guideName")String guideName){
         return guideService.findByGuideName(guideName);
 
+
+    }
+
+/*
+    @GetMapping(path = "/getGuideByGuideName",params = "guideName",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Response> findByGuideName(@RequestParam("guideName")String guideName){
+        return guideService.getGuideByName(guideName);
+
+
+    }
+*/
+
+    @GetMapping(path = "/getAllGuides",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Response>getAllGuides(){
+        return  guideService.getAll();
 
     }
 

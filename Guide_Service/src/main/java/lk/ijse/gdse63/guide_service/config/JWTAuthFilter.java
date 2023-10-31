@@ -43,26 +43,26 @@ public class JWTAuthFilter extends OncePerRequestFilter {
         }
         jwtToken = authHeader.substring(7);
         JWT_TOKEN=jwtToken;
-        // Extracting guide ID from the JWT token payload
-        String guideID = null;
+
         try {
             userName = JWTService.extractUsername(jwtToken);
-            System.out.println("guideId : " + guideID);
+            System.out.println("Username : " + userName);
         } catch (Exception exception) {
             handlerExceptionResolver.resolveException(request, response, null, new RuntimeException("Invalid token : " + exception.getLocalizedMessage()));
             return;
 
+
         }
         //Checking of the username's not nullability  and the authentication status of the current user.
-        if (guideID != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+        if (userName != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
-            if (JWTService.validateToken(jwtToken) && JWTService.getguideID(jwtToken).equals("A_GUIDE") || JWTService.getguideID(jwtToken).equals("packageAdmin")) {
-                System.out.println("guideID : "+JWTService.getguideID(jwtToken));
+            if (JWTService.validateToken(jwtToken) && JWTService.getUserRole(jwtToken).equals("GuideAdmin") || JWTService.getUserRole(jwtToken).equals("packageAdmin")) {
+                System.out.println("User role : "+JWTService.getUserRole(jwtToken));
                 List<SimpleGrantedAuthority> simpleGrantedAuthorities=new ArrayList<>();
-                simpleGrantedAuthorities.add(new SimpleGrantedAuthority((String) JWTService.getguideID(jwtToken)));
+                simpleGrantedAuthorities.add(new SimpleGrantedAuthority(JWTService.getUserRole(jwtToken)));
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userName, null,simpleGrantedAuthorities);
                 System.out.println("auth status: " + authToken.isAuthenticated());
-                System.out.println("Here is user role : "+JWTService.getguideID(jwtToken));
+                System.out.println("Here is user role : "+JWTService.getUserRole(jwtToken));
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);
 

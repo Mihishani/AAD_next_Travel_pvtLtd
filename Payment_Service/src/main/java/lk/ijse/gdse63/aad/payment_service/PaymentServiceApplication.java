@@ -9,7 +9,6 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 public class PaymentServiceApplication {
 
     public static void main(String[] args) {
-        System.out.println("PAYMENT-SERVER-START");
         SpringApplication.run(PaymentServiceApplication.class, args);
         System.out.println("PAYMENT-SERVER-START");
     }

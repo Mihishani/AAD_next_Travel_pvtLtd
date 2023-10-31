@@ -18,24 +18,22 @@ import java.util.List;
 public class Package_entity {
 
     @Id
+
     private String package_id;
 
     private String packageCategory;
 
+    private String  vehicalCate;
+
+    private String hotelCate;
 
     @ElementCollection
     private List<String> hotel_list;
 
     @ElementCollection//we cant use many to one
-    private List<String> Vehical_id;
+    private List<String> VehicalList;
 
-    @ElementCollection
-    private List<String> user_list;
 
-    @ElementCollection
-    private List<String> guideID;
-
-    private String packageDetails;
 
 
 

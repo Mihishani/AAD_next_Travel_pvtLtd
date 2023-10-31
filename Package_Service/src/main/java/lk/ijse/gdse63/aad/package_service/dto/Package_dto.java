@@ -14,17 +14,19 @@ import java.util.List;
 @ToString
 public class Package_dto implements Serializable,Super_dto{
 
-
-
     private String package_id;
 
-    private String  vehical_list;
-
-    private String hotel_list;
-
-    private String user_list;
-
-    private String guideID;
-
     private String packageCategory;
+
+    private String  vehicalCate;
+
+    private String hotelCate;
+
+
+
+
+
+
+ 
+
 }

@@ -1,8 +1,8 @@
 package lk.ijse.gdse63.aad.payment_service.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,10 +10,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-
+@Builder
+@Table
 public class Payment_entity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private String payID;
 
     private int DailyIncome;

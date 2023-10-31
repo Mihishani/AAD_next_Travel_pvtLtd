@@ -1,5 +1,6 @@
 package lk.ijse.gdse63.aad.hotel_service.config;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,6 +10,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
 
     @Autowired
@@ -19,7 +21,7 @@ public class SecurityConfig {
         http
                 .addFilterBefore(jwtAuthFilter, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
-                .requestMatchers("/**").hasAnyAuthority("A_HOTEL","A_PACKAGE")
+                .requestMatchers("/**").hasAnyAuthority("HotelAdmin","packageAdmin","paymentAdmin")
                 .anyRequest().permitAll()
 
                 .and()
@@ -28,6 +30,5 @@ public class SecurityConfig {
 
     }
 }
-//eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyUm9sZSI6IkFfSE9URUwiLCJzdWIiOiJob3RlbGFkbWluIiwiaWF0IjoxNjk4MDY3MzYzLCJleHAiOjQ4NTE2NjczNjN9.tKHjcgdzWsQ6gXu4rBD33wZxFFPZQNmc9WvYcM89scU
 
-//eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyUm9sZSI6IkFfSE9URUwiLCJzdWIiOiJob3RlbEFkbWluIiwiaWF0IjoxNjk4MDY4MjgzLCJleHAiOjQ4NTE2NjgyODN9.gvI62fX0TSVJyO6JDlISC2yFHoZdGLF6lC2RGyD2exw
+/*eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyUm9sZSI6IkhvdGVsQWRtaW4iLCJzdWIiOiJVc2VybmFtZSIsImlhdCI6MTY5ODQzMzg2OSwiZXhwIjo0ODUyMDMzODY5fQ.tqSzSCYSfcHkJ_d2BuxSiYmWtMJy4gKby8t2cSSuzB8*/
