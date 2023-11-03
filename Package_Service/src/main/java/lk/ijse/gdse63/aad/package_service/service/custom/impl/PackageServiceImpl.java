@@ -58,7 +58,7 @@ public class PackageServiceImpl implements PackageService {
         if (packageEntity.isPresent()){
             return createAndSendResponse(HttpStatus.FOUND.value() ,"success",modelMapper.map(packageEntity.get(),Package_dto.class));
         }
-        return createAndSendResponse(HttpStatus.NOT_EXTENDED.value(),null,"eorr");
+        return createAndSendResponse(HttpStatus.NOT_EXTENDED.value(),"eorr",null);
     }
 
     @Override
@@ -74,7 +74,7 @@ public class PackageServiceImpl implements PackageService {
     public ResponseEntity<Response>  update(Package_dto packageDto) {
         if (search(packageDto.getPackage_id()).getBody().getData() !=null){
             packageRepo.save(modelMapper.map(packageDto,Package_entity.class));
-            return createAndSendResponse(HttpStatus.OK.value(), null,"Update OK!");
+            return createAndSendResponse(HttpStatus.OK.value(), "Update OK!",null);
         }
         throw new RuntimeException("No found!");
 

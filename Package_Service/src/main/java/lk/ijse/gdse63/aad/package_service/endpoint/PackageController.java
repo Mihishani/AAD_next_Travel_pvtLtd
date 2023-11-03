@@ -10,8 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/package")
-@CrossOrigin
+@RequestMapping("api/v1/package")
+@CrossOrigin(origins = "http://localhost:8080")
+
 //        (origins = "http://localhost:8080")
 public class PackageController {
 
@@ -35,7 +36,7 @@ public class PackageController {
         return packageService.save(packageDto);
     }
 
-    @PutMapping(path = "/P_put",consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
+//    @PutMapping(path = "/P_put",consumes = MediaTypae.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Response> update(@RequestBody Package_dto packageDto){
         System.out.println("Package update working");
         return packageService.update(packageDto);
@@ -49,6 +50,12 @@ public class PackageController {
     @GetMapping(path = "/P_search",params = "Package_ID",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Response>  search(@RequestParam("Package_ID") String packageID){
         return packageService.search(packageID);
+    }
+
+    @GetMapping(path = "/getAllPackages",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Response>getAllPackages(){
+        return  packageService.getAll();
+
     }
 
 }

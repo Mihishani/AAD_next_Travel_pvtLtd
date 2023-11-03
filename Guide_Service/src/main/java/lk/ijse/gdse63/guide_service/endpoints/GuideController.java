@@ -9,8 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("api/v1/guide")
-@CrossOrigin
+@RequestMapping("guide/")
+@CrossOrigin/*(origins = "http://localhost:8080")*/
 public class GuideController {
 
 
@@ -18,7 +18,7 @@ public class GuideController {
     @Autowired
     private GuideService guideService;
 
-    @PostMapping(path = "/Gsave",consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "Gsave",consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity saveGuide(@RequestBody Guide_dto guideDto){
         System.out.println("Guide save controller"+guideDto.toString());
         return guideService.save(guideDto);
